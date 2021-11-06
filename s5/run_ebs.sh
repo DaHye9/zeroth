@@ -71,10 +71,10 @@ fi
 # it takes long time and do this again after computing silence prob.
 # you can do comment out here this time
 
-#utils/build_const_arpa_lm.sh data/local/lm/zeroth.lm.tg.arpa.gz \
-#	data/lang_nosp data/lang_nosp_test_tglarge
-#utils/build_const_arpa_lm.sh data/local/lm/zeroth.lm.fg.arpa.gz \
-#	  data/lang_nosp data/lang_nosp_test_fglarge
+utils/build_const_arpa_lm.sh data/local/lm/zeroth.lm.tg.arpa.gz \
+	data/lang_nosp data/lang_nosp_test_tglarge
+utils/build_const_arpa_lm.sh data/local/lm/zeroth.lm.fg.arpa.gz \
+	  data/lang_nosp data/lang_nosp_test_fglarge
 
 # Feature extraction (MFCC)
 d=0
@@ -112,8 +112,8 @@ fi
 # Make some small data subsets for early system-build stages.
 d=0
 if [ $d == 1 ]; then
-#utils/subset_data_dir.sh --shortest data/train_ebs 1500000 data/train_ebs_short
-#utils/subset_data_dir.sh data/train_ebs_short 60000 data/train_ebs_60kshort
+utils/subset_data_dir.sh --shortest data/train_ebs 1500000 data/train_ebs_short
+utils/subset_data_dir.sh data/train_ebs_short 60000 data/train_ebs_60kshort
 utils/subset_data_dir.sh data/train_ebs 60000 data/train_ebs_60k
 fi
 
@@ -131,8 +131,8 @@ echo "#### Triphone Training, delta + delta-delta ###########"
 #  recognition result 
 d=0
 if [ $d == 1 ]; then
-#steps/align_si.sh --nj 8 --cmd "$train_cmd" \
-#  data/train_data_01 data/lang exp/mono_zeroth_all exp/mono_ali_zeroth_all
+steps/align_si.sh --nj 8 --cmd "$train_cmd" \
+  data/train_data_01 data/lang exp/mono_zeroth_all exp/mono_ali_zeroth_all
 steps/train_deltas.sh --cmd "$train_cmd" \
     30 5000 data/train_data_01 data/lang exp/mono_ali_zeroth_all exp/tri1_zeroth_all
 steps/align_si.sh --nj 8 --cmd "$train_cmd" \
@@ -149,11 +149,11 @@ d=0
 echo "#### Triphone Training, LDA+MLLT ###########"
 # train an LDA+MLLT system.
 if [ $d == 1 ]; then
-#steps/align_si.sh --nj 8 --cmd "$train_cmd" \
-#  data/train_ebs_short data/lang exp/tri3_ebs_60k exp/tri3_ali_ebs_short
-#steps/train_lda_mllt.sh --cmd "$train_cmd" \
-#   --splice-opts "--left-context=3 --right-context=3" 30 60000 \
-#   data/train_ebs_short data/lang exp/tri3_ali_ebs_short exp/tri4_ebs_short
+steps/align_si.sh --nj 8 --cmd "$train_cmd" \
+  data/train_ebs_short data/lang exp/tri3_ebs_60k exp/tri3_ali_ebs_short
+steps/train_lda_mllt.sh --cmd "$train_cmd" \
+   --splice-opts "--left-context=3 --right-context=3" 30 60000 \
+   data/train_ebs_short data/lang exp/tri3_ali_ebs_short exp/tri4_ebs_short
 
 # Align a 10k utts subset using the tri2b model
 steps/align_si.sh  --nj 8 --cmd "$train_cmd" --use-graphs true \
@@ -161,7 +161,7 @@ steps/align_si.sh  --nj 8 --cmd "$train_cmd" --use-graphs true \
 
 echo "#### Triphone Training, LDA+MLLT+SAT ###########"
 # Train tri3b, which is LDA+MLLT+SAT on 10k utts
-#steps/train_sat.sh --cmd "$train_cmd" 3000 25000 \
+steps/train_sat.sh --cmd "$train_cmd" 3000 25000 \
 steps/train_sat.sh --cmd "$train_cmd" 4200 60000 \
   data/train_ebs_short data/lang exp/tri4_ali_ebs_short exp/tri5b
 fi
