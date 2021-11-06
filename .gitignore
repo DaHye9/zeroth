@@ -3,8 +3,7 @@
 *.gz
 *.log
 s5/AUDIO_INFO
-s5/DATA
-s5/data
+s5/DATA/*
 s5/conf
 s5/exp
 s5/mfcc*
@@ -18,6 +17,4 @@ s5/log
 s5/zeroth_lexicon
 s5/zeroth_morfessor.seg
 s5/speechDATA
-!**/*.sh
-!**/*.py
-!**/*.pl
+s5/data/

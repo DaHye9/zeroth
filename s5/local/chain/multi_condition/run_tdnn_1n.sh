@@ -4,12 +4,12 @@ set -e -o pipefail
 
 # First the options that are passed through to run_ivector_common.sh
 # (some of which are also used in this script directly).
-stage=13
+stage=14
 nj=16
 train_set=train_ebs_short
 num_data_reps=1        # number of reverberated copies of data to generate
 speed_perturb=true
-test_sets="valid_ebs_science_school"
+test_sets="valid_ebs_test_2000"
 gmm=tri7b_v2       # this is the source gmm-dir that we'll use for alignments; it
                  # should have alignments for the specified training data.
 nnet3_affix=_rvb       # affix for exp dirs, e.g. it was _cleaned in tedlium.
@@ -282,7 +282,7 @@ if [ $stage -le 13 ]; then
     $tree_dir $tree_dir/graph_tgsmall || exit 1;
 fi
 
-modeldir="./test/models/korean/ebs_model_v1"
+modeldir="./test/models/korean/zeroth"
 if $test_online_decoding && [ $stage -le 14 ]; then
   # note: if the features change (e.g. you add pitch features), you will have to
   # change the options of the following command line.
